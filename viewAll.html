@@ -1,0 +1,146 @@
+
+
+<html>
+    <head>
+        <title>Employee Details</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1" >
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <!-- Latest compiled JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <title> Google Icons</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+        <script>
+            $(document).ready(function(){
+
+                // Prechecking
+                $(".Present").attr("disabled","disabled");
+                $(".Present").html("Attendance Complete");
+
+                $(".attendance").click(function()
+                {
+                    let id = $(this).attr("title");
+
+                    $.ajax({
+                        url : "attended/"+id,
+                        success : function(res){
+                            if(res=="attendance taken")
+                            {
+                                $(this).attr("disabled","disabled");
+                                $(this).html("Attendance Complete");
+                                document.location.reload();
+                                console.log("success"+"  "+$(this).attr("title"));
+                            }
+                            else
+                            {
+                                console.log("failed"+"   "+res);
+                            }
+                        },
+                        error : function(res){
+                            alert("Some Error Occurred"+ res.responseText);
+                        }
+                    });
+                });
+
+            });
+        </script>
+
+        <style>
+              body,html
+            {
+                height: 80%;
+            }
+            body
+            {
+                background-image: url("backgroun1.jpg");
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+                position: relative;
+            }
+            .container
+            {
+                border: 1px solid black;
+                border-radius: 7px;
+                margin-top: 5%;
+            }
+            h2
+            {
+                text-align: center;
+                text-decoration: underline;
+                margin-bottom: 20px;
+            }
+            .thead
+            {
+                color : BLACK;
+            }
+            .thead td
+            {
+                background-color: dimgrey;
+            }
+            span
+            {
+                border-bottom: 2px solid;
+            }
+            .container
+            {
+                border: 1px solid black;
+                border-radius: 7px;
+                margin-top: 15%;
+            }
+            h2
+            {
+                text-align: center;
+                text-decoration: underline;
+                margin-bottom: 40px;
+            }
+        </style>
+        
+
+    </head>
+    <body>
+
+        <div class="container">
+            <h2>View All Employees</h2>
+            <table class="table table-striped table-hover table-condensed text-center">
+                <thead class="thead">
+                    <td class="text-center">Emp Id</td>
+                    <td>Name</td>
+                    <td>Attendance</td>
+                    <td>Edit</td>
+                    <td>Delete</td>
+                </thead>
+                
+
+                <c:forEach var="e" items="${employees}">
+                    <tr>
+                        <td class="text-center">${e.empid}</td>
+                        <td>${e.name}</td>
+                        <td>
+                            <p class="ml-4">Attended</p>
+                            <div class="form-group mb-0 pb-0" id="attendance" title="${e.attendance}"><br><br>
+                                <br>
+                                <label class="radio-inline" title="yes"><input type="radio" name="attendance-${e.empid}" value="yes" />Yes</label>
+                                <label class="radio-inline" title="no"><input type="radio" name="attendance-${e.empid}" value="no"/>No</label>
+                            </div>
+
+                            <button class="btn btn-warning attendance ${e.attendance}" title="${e.empid}">Present</button>
+                            <button class="btn " onclick="window.location.href='insert.html'">Back </button>    <!-- backbutton-->
+
+                        </td>
+                        <td><a class="text-primary" href="get/${e.empid}">Edit</a></td>
+                        <td><a class="text-danger"  href="delete/${e.empid}">Delete</a></td>
+                    </tr>
+                </c:forEach>
+
+            </table>
+        </div>
+
+    </body>
+
+</html>
